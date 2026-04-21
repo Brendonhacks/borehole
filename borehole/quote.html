@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Quote | AquaDrill Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0A4D8C;
+            --primary-dark: #073663;
+            --earth-brown: #8B5E3C;
+            --earth-light: #A67B5B;
+            --accent-orange: #F4A261;
+            --text-dark: #2C3E50;
+            --text-light: #666;
+            --white: #ffffff;
+            --light-gray: #F4F7F6;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(10, 77, 140, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(10, 77, 140, 0.4); }
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--earth-brown), var(--earth-light));
+            color: var(--white);
+        }
+        .btn-secondary:hover { transform: translateY(-3px); }
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--earth-brown), var(--accent-orange));
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.fade-out { opacity: 0; visibility: hidden; }
+        .loader-water {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-blue);
+            border-top-color: var(--accent-orange);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: var(--earth-brown); font-size: 2rem; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-blue); }
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-blue); }
+
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(135deg, rgba(10, 77, 140, 0.9), rgba(139, 94, 60, 0.8)), 
+                        url('https://picsum.photos/seed/quote/1920/400') no-repeat center center/cover;
+            padding: 80px 0;
+            color: var(--white);
+            text-align: center;
+        }
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: slideDown 0.6s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quote Container */
+        .quote-container {
+            max-width: 750px;
+            margin: -50px auto 0;
+            background: var(--white);
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Progress Steps */
+        .step-progress {
+            display: flex;
+            margin-bottom: 40px;
+            justify-content: space-between;
+            position: relative;
+        }
+        .step-progress::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            z-index: 2;
+            transition: var(--transition);
+            position: relative;
+        }
+        .progress-step span {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            box-shadow: 0 0 0 5px rgba(10, 77, 140, 0.2);
+        }
+        .progress-step.completed {
+            background: var(--earth-brown);
+        }
+        .progress-step.completed i {
+            display: block;
+        }
+        .progress-step .step-number {
+            display: block;
+        }
+        .progress-step.completed .step-number {
+            display: none;
+        }
+        .progress-step i {
+            display: none;
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+            animation: fadeSlide 0.4s ease;
+        }
+        .form-step.active-step {
+            display: block;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-step h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        .form-step > p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(10, 77, 140, 0.1);
+        }
+
+        .step-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+        }
+        .error-msg {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Summary */
+        .summary-box {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+            color: #aaa;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a:hover { color: var(--accent-orange); padding-left: 5px; }
+        .social-links a { margin-right: 15px; font-size: 1.4rem; transition: var(--transition); }
+        .social-links a:hover { color: var(--accent-orange); transform: translateY(-3px); }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+        /* Success Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal i {
+            font-size: 60px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .modal h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        .modal p {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 85px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 30px;
+                display: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-radius: 0 0 20px 20px;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .page-banner h1 { font-size: 2.2rem; }
+            .quote-container { padding: 30px 20px; }
+            .progress-step span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader" style="text-align: center;">
+            <div class="loader-water"></div>
+            <p style="color: var(--primary-blue); font-weight: 600;">Loading Quote Form...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <i class="fa-solid fa-circle-check"></i>
+            <h3>Quote Request Received!</h3>
+            <p>Thank you for choosing AquaDrill Pro. Our team will contact you within 24 hours with a detailed quote.</p>
+            <button class="btn btn-primary" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-faucet-drip"></i> AquaDrill Pro
+            </a>
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+                <a href="quote.html" class="active btn btn-primary">Get a Quote</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Request a Quote</h1>
+            <p>Get a personalized estimate for your water project</p>
+        </div>
+    </section>
+
+    <!-- Quote Form -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="quote-container" data-aos="fade-up">
+                <div class="step-progress">
+                    <div class="progress-step active" id="progress-1">
+                        <span class="step-number">1</span>
+                        <i class="fa-solid fa-check"></i>
+                        <span>Location</span>
+                    </div>
+                    <div class="progress-step" id="progress-2">
+                        <span class="step-number">2</span>
+                        <i class="fa-solid fa-check"></i>
+                        <span>Purpose</span>
+                    </div>
+                    <div class="progress-step" id="progress-3">
+                        <span class="step-number">3</span>
+                        <i class="fa-solid fa-check"></i>
+                        <span>Needs</span>
+                    </div>
+                    <div class="progress-step" id="progress-4">
+                        <span class="step-number">4</span>
+                        <i class="fa-solid fa-check"></i>
+                        <span>Details</span>
+                    </div>
+                </div>
+
+                <form id="multi-step-form">
+                    <!-- Step 1: Location -->
+                    <div class="form-step active-step" id="step-1">
+                        <h3><i class="fa-solid fa-location-dot" style="margin-right: 10px; color: var(--earth-brown);"></i>Step 1: Site Location</h3>
+                        <p>Please provide the location where drilling is required.</p>
+                        
+                        <div class="form-group">
+                            <label>Region / County *</label>
+                            <select id="region" required>
+                                <option value="">Select Region</option>
+                                <option value="central">Central Region</option>
+                                <option value="coastal">Coastal Region</option>
+                                <option value="highlands">Highlands Region</option>
+                                <option value="rift">Rift Valley</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Exact Address / Landmark *</label>
+                            <input type="text" id="address" placeholder="e.g. Near Farm junction, Plot 123" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Property Type *</label>
+                            <select id="propertyType" required>
+                                <option value="">Select Type</option>
+                                <option value="owned">Owned Land</option>
+                                <option value="rented">Rented Property</option>
+                                <option value="commercial">Commercial Plot</option>
+                                <option value="community">Community Land</option>
+                            </select>
+                        </div>
+                        
+                        <div class="step-actions" style="justify-content: flex-end;">
+                            <button type="button" class="btn btn-primary next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Purpose -->
+                    <div class="form-step" id="step-2">
+                        <h3><i class="fa-solid fa-bullseye" style="margin-right: 10px; color: var(--earth-brown);"></i>Step 2: Project Purpose</h3>
+                        <p>What will the water be used for?</p>
+                        
+                        <div class="form-group">
+                            <label>Main Purpose *</label>
+                            <select id="purpose" required>
+                                <option value="">Select Purpose</option>
+                                <option value="domestic">Domestic (Home use)</option>
+                                <option value="agricultural">Agricultural (Irrigation/Farming)</option>
+                                <option value="commercial">Commercial (Business/Factory)</option>
+                                <option value="institutional">Institutional (School/Hospital)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Users/Households *</label>
+                            <input type="number" id="users" placeholder="e.g. 5" required>
+                        </div>
+                        
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary prev-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                            <button type="button" class="btn btn-primary next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Water Needs -->
+                    <div class="form-step" id="step-3">
+                        <h3><i class="fa-solid fa-droplet" style="margin-right: 10px; color: var(--earth-brown);"></i>Step 3: Water Requirements</h3>
+                        <p>Estimate your daily water needs.</p>
+                        
+                        <div class="form-group">
+                            <label>Estimated Daily Usage *</label>
+                            <select id="usage" required>
+                                <option value="">Select Range</option>
+                                <option value="small">1,000 - 3,000 Liters</option>
+                                <option value="medium">3,000 - 10,000 Liters</option>
+                                <option value="large">10,000 - 20,000 Liters</option>
+                                <option value="xlarge">20,000+ Liters</option>
+                                <option value="unsure">Unsure / Need Advice</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Power Source Preference</label>
+                            <select id="powerSource">
+                                <option value="grid">Grid Electricity</option>
+                                <option value="solar">Solar Power</option>
+                                <option value="generator">Generator</option>
+                                <option value="hybrid">Hybrid System</option>
+                            </select>
+                        </div>
+                        
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary prev-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                            <button type="button" class="btn btn-primary next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Contact & Summary -->
+                    <div class="form-step" id="step-4">
+                        <h3><i class="fa-solid fa-address-card" style="margin-right: 10px; color: var(--earth-brown);"></i>Step 4: Contact Details</h3>
+                        <p>Where should we send the quote?</p>
+                        
+                        <div class="summary-box">
+                            <h4 style="margin-bottom: 15px; color: var(--primary-blue);">Summary of Your Request</h4>
+                            <div class="summary-item">
+                                <span>Location:</span>
+                                <span id="summary-location">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Purpose:</span>
+                                <span id="summary-purpose">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Daily Usage:</span>
+                                <span id="summary-usage">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Power Source:</span>
+                                <span id="summary-power">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="fullName" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" placeholder="+123 456 7890" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Additional Notes</label>
+                            <textarea id="notes" rows="3" placeholder="Any special requirements or questions?"></textarea>
+                        </div>
+                        
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-secondary prev-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                            <button type="submit" class="btn btn-primary">Submit Request <i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px; color: white;">
+                        <i class="fa-solid fa-faucet-drip" style="color: var(--accent-orange);"></i> AquaDrill Pro
+                    </div>
+                    <p>Providing reliable water solutions since 2008. Your trusted partner in borehole drilling and water management.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Borehole Drilling</li>
+                        <li>Solar Pumps</li>
+                        <li>Maintenance</li>
+                        <li>Hydro-geological Survey</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="border-top: 1px solid #333; padding-top: 20px;">
+                <p>&copy; 2024 AquaDrill Pro. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#preloader').addClass('fade-out');
+            }, 500);
+            
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
+            $('.mobile-toggle').click(function() {
+                $('.nav-links').toggleClass('active');
+                $(this).find('i').toggleClass('fa-bars fa-times');
+            });
+
+            // Multi-step form
+            let currentStep = 1;
+            const totalSteps = 4;
+
+            $('.next-btn').click(function() {
+                let parent = $(this).closest('.form-step');
+                let inputs = parent.find('input[required], select[required]');
+                let valid = true;
+                
+                inputs.each(function() {
+                    if (!$(this).val()) {
+                        $(this).css('border-color', '#dc3545');
+                        valid = false;
+                    } else {
+                        $(this).css('border-color', '#e0e0e0');
+                    }
+                });
+
+                if (!valid) {
+                    parent.find('.error-msg').remove();
+                    parent.append('<div class="error-msg">Please fill in all required fields.</div>');
+                    return;
+                }
+
+                parent.find('.error-msg').remove();
+
+                if (currentStep < totalSteps) {
+                    $('#step-' + currentStep).removeClass('active-step');
+                    currentStep++;
+                    $('#step-' + currentStep).addClass('active-step');
+                    updateProgress();
+                    updateSummary();
+                }
+            });
+
+            $('.prev-btn').click(function() {
+                if (currentStep > 1) {
+                    $('#step-' + currentStep).removeClass('active-step');
+                    currentStep--;
+                    $('#step-' + currentStep).addClass('active-step');
+                    updateProgress();
+                }
+            });
+
+            function updateProgress() {
+                for (let i = 1; i <= totalSteps; i++) {
+                    if (i < currentStep) {
+                        $('#progress-' + i).addClass('completed').removeClass('active');
+                    } else if (i === currentStep) {
+                        $('#progress-' + i).addClass('active').removeClass('completed');
+                    } else {
+                        $('#progress-' + i).removeClass('active completed');
+                    }
+                }
+            }
+
+            function updateSummary() {
+                $('#summary-location').text($('#region option:selected').text() || '-');
+                $('#summary-purpose').text($('#purpose option:selected').text() || '-');
+                $('#summary-usage').text($('#usage option:selected').text() || '-');
+                $('#summary-power').text($('#powerSource option:selected').text() || '-');
+            }
+
+            // Form Submit
+            $('#multi-step-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                var name = $('#fullName').val();
+                var phone = $('#phone').val();
+                var email = $('#email').val();
+                
+                if (name && phone && email) {
+                    $('#successModal').fadeIn().css('display', 'flex');
+                }
+            });
+
+            window.closeModal = function() {
+                $('#successModal').fadeOut();
+                window.location.href = 'index.html';
+            };
+
+            $('.modal-overlay').click(function(e) {
+                if (e.target === this) {
+                    $(this).fadeOut();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | AquaDrill Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0A4D8C;
+            --primary-dark: #073663;
+            --earth-brown: #8B5E3C;
+            --earth-light: #A67B5B;
+            --accent-orange: #F4A261;
+            --text-dark: #2C3E50;
+            --text-light: #666;
+            --white: #ffffff;
+            --light-gray: #F4F7F6;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(10, 77, 140, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(10, 77, 140, 0.4); }
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--earth-brown), var(--accent-orange));
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.fade-out { opacity: 0; visibility: hidden; }
+        .loader-water {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-blue);
+            border-top-color: var(--accent-orange);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: var(--earth-brown); font-size: 2rem; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-blue); }
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-blue); }
+
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(135deg, rgba(10, 77, 140, 0.9), rgba(139, 94, 60, 0.8)), 
+                        url('https://picsum.photos/seed/drillteam/1920/400') no-repeat center center/cover;
+            padding: 80px 0;
+            color: var(--white);
+            text-align: center;
+        }
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: slideDown 0.6s ease;
+        }
+        .page-banner p {
+            font-size: 1.2rem;
+            animation: slideUp 0.6s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-img {
+            position: relative;
+        }
+        .about-img img {
+            border-radius: 20px;
+            box-shadow: 20px 20px 0 var(--earth-brown);
+            transition: var(--transition);
+        }
+        .about-img:hover img {
+            box-shadow: 10px 10px 0 var(--earth-brown);
+            transform: translate(10px, 10px);
+        }
+        .timeline {
+            margin-top: 40px;
+            border-left: 3px solid var(--primary-blue);
+            padding-left: 25px;
+        }
+        .timeline-item {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--primary-blue);
+        }
+        .timeline-item strong {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .value-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .value-card i {
+            font-size: 2.5rem;
+            color: var(--earth-brown);
+            margin-bottom: 20px;
+        }
+
+        /* Certifications */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .cert-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .cert-card:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+        .cert-card i {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .team-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .team-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .team-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .team-info h4 {
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+        .team-info p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        .team-social a {
+            margin: 0 8px;
+            color: var(--earth-brown);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+            color: #aaa;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a:hover { color: var(--accent-orange); padding-left: 5px; }
+        .social-links a { margin-right: 15px; font-size: 1.4rem; transition: var(--transition); }
+        .social-links a:hover { color: var(--accent-orange); transform: translateY(-3px); }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 85px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 30px;
+                display: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-radius: 0 0 20px 20px;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .about-grid { grid-template-columns: 1fr; }
+            .page-banner h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader" style="text-align: center;">
+            <div class="loader-water"></div>
+            <p style="color: var(--primary-blue); font-weight: 600;">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-faucet-drip"></i> AquaDrill Pro
+            </a>
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html" class="active">About Us</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+                <a href="quote.html" class="btn btn-primary">Get a Quote</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>About AquaDrill Pro</h1>
+            <p>15+ Years of Excellence in Water Solutions</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img" data-aos="fade-right">
+                    <img src="https://picsum.photos/seed/drillteam/600/450" alt="Drilling Team">
+                </div>
+                <div class="about-content" data-aos="fade-left">
+                    <h2 class="section-title" style="display: block; text-align: left;">Who We Are</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">AquaDrill Pro has been a leader in the water drilling industry for over 15 years. We are committed to providing sustainable, clean water solutions to communities, farms, and businesses across the region.</p>
+                    
+                    <h3 style="color: var(--primary-blue); margin-bottom: 15px;">Our Mission</h3>
+                    <p>To deliver reliable, cost-effective, and long-lasting water access through superior engineering and environmental stewardship. We believe everyone deserves access to clean water.</p>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <strong>2008</strong>
+                            <p>Company founded with one drilling rig and a vision.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <strong>2015</strong>
+                            <p>Expanded to Solar Pumping solutions and green energy.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <strong>2023</strong>
+                            <p>500th Borehole completed successfully across 5 regions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="section-padding" style="background: var(--white);">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="section-title">Our Core Values</h2>
+                <p>What drives us every day</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-hand-holding-droplet"></i>
+                    <h3>Integrity</h3>
+                    <p>Honest assessments and transparent pricing.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-medal"></i>
+                    <h3>Excellence</h3>
+                    <p>Quality workmanship on every project.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-leaf"></i>
+                    <h3>Sustainability</h3>
+                    <p>Eco-friendly drilling and solar solutions.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Community</h3>
+                    <p>Improving lives through water access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="section-title">Our Certifications</h2>
+                <p>Industry recognized standards</p>
+            </div>
+            <div class="certs-grid">
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fa-solid fa-certificate"></i>
+                    <h4>ISO 9001:2015</h4>
+                    <p>Quality Management</p>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Water Board Approved</h4>
+                    <p>Licensed Contractor</p>
+                </div>
+                <div class="cert-card" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <h4>Engineers Board</h4>
+                    <p>Certified Professionals</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section-padding" style="background: var(--white);">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="section-title">Meet Our Leadership</h2>
+                <p>Experts dedicated to your water needs</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card" data-aos="flip-left" data-aos-delay="100">
+                    <img src="https://picsum.photos/seed/ceo/300/300" alt="CEO">
+                    <div class="team-info">
+                        <h4>John Mwangi</h4>
+                        <p>Founder & CEO</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card" data-aos="flip-left" data-aos-delay="200">
+                    <img src="https://picsum.photos/seed/engineer/300/300" alt="Engineer">
+                    <div class="team-info">
+                        <h4>Sarah Omondi</h4>
+                        <p>Chief Hydrogeologist</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card" data-aos="flip-left" data-aos-delay="300">
+                    <img src="https://picsum.photos/seed/ops/300/300" alt="Operations">
+                    <div class="team-info">
+                        <h4>David Kimani</h4>
+                        <p>Operations Director</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px; color: white;">
+                        <i class="fa-solid fa-faucet-drip" style="color: var(--accent-orange);"></i> AquaDrill Pro
+                    </div>
+                    <p>Providing reliable water solutions since 2008. Your trusted partner in borehole drilling and water management.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Borehole Drilling</li>
+                        <li>Solar Pumps</li>
+                        <li>Maintenance</li>
+                        <li>Hydro-geological Survey</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="border-top: 1px solid #333; padding-top: 20px;">
+                <p>&copy; 2024 AquaDrill Pro. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#preloader').addClass('fade-out');
+            }, 500);
+            
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
+            $('.mobile-toggle').click(function() {
+                $('.nav-links').toggleClass('active');
+                $(this).find('i').toggleClass('fa-bars fa-times');
+            });
+        });
+    </script>
+</body>
+</html>

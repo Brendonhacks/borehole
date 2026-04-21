@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaDrill Pro | Reliable Water Solutions</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL VARIABLES & RESET --- */
+        :root {
+            --primary-blue: #0A4D8C;
+            --primary-dark: #073663;
+            --earth-brown: #8B5E3C;
+            --earth-light: #A67B5B;
+            --accent-orange: #F4A261;
+            --text-dark: #2C3E50;
+            --text-light: #666;
+            --white: #ffffff;
+            --light-gray: #F4F7F6;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(10, 77, 140, 0.3);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(10, 77, 140, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--earth-brown), var(--earth-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
+        }
+        .btn-secondary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(139, 94, 60, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--white);
+            color: var(--white);
+            background: transparent;
+        }
+        .btn-outline:hover { 
+            background-color: var(--white); 
+            color: var(--primary-blue); 
+        }
+
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--earth-brown), var(--accent-orange));
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            text-align: center;
+        }
+        .loader-water {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-blue);
+            border-top-color: var(--accent-orange);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loader p {
+            color: var(--primary-blue);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { 
+            color: var(--earth-brown); 
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .nav-links a:hover, 
+        .nav-links a.active { 
+            color: var(--primary-blue); 
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--primary-blue);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(135deg, rgba(10, 77, 140, 0.85), rgba(139, 94, 60, 0.75)), 
+                        url('https://images.unsplash.com/photo-1724195174781-e0caed5768d0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODd8fGNsZWFuJTIwYm9yZWhvbGUlMjB3YXRlciUyMDRrfGVufDB8fDB8fHww') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: slideUp 0.8s ease;
+        }
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            animation: slideUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+        .hero-btns { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            animation: slideUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- TRUST BAR --- */
+        .trust-bar {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            padding: 45px 0;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        .trust-item {
+            padding: 10px;
+        }
+        .trust-item h3 { 
+            font-size: 3rem; 
+            color: var(--accent-orange); 
+            font-weight: 700;
+        }
+        .trust-item p { 
+            font-size: 1rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+
+        /* --- SERVICES SNAPSHOT --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .service-card {
+            background: var(--white);
+            padding: 40px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--earth-brown));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .service-card:hover .service-icon {
+            color: var(--earth-brown);
+            transform: scale(1.1);
+        }
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        /* --- PROCESS --- */
+        .process-section { 
+            background: linear-gradient(180deg, var(--white), #f8fafc); 
+        }
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 60px;
+            position: relative;
+        }
+        .step-card {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--earth-brown), var(--earth-light));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            z-index: 2;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(139, 94, 60, 0.3);
+        }
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 60px;
+            right: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--earth-brown), var(--primary-blue));
+            z-index: 1;
+        }
+
+        /* --- CTA --- */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            padding: 70px 0;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+            color: #aaa;
+            padding: 60px 0 20px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { 
+            color: var(--white); 
+            margin-bottom: 20px; 
+            font-size: 1.2rem;
+        }
+        .footer-col ul li { 
+            margin-bottom: 12px; 
+        }
+        .footer-col ul li a:hover { 
+            color: var(--accent-orange); 
+            padding-left: 5px;
+        }
+        .social-links a { 
+            margin-right: 15px; 
+            font-size: 1.4rem; 
+            transition: var(--transition);
+        }
+        .social-links a:hover {
+            color: var(--accent-orange);
+            transform: translateY(-3px);
+        }
+
+        /* --- WHATSAPP FLOAT --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-float:hover { 
+            transform: scale(1.1) rotate(5deg); 
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 85px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 30px;
+                display: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-radius: 0 0 20px 20px;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .trust-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .process-steps::before { display: none; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <div class="loader-water"></div>
+            <p>AquaDrill Pro</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-faucet-drip"></i> AquaDrill Pro
+            </a>
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+                <a href="quote.html" class="btn btn-primary">Get a Quote</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>Reliable Water Solutions,<br>Drilled to Last.</h1>
+                <p>Professional borehole drilling, pump installation, and maintenance for domestic, commercial, and agricultural needs.</p>
+                <div class="hero-btns">
+                    <a href="quote.html" class="btn btn-primary">Get a Free Quote</a>
+                    <a href="tel:+1234567890" class="btn btn-outline">Call Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Bar -->
+        <div class="container">
+            <div class="trust-bar" data-aos="fade-up">
+                <div class="container trust-grid">
+                    <div class="trust-item">
+                        <h3><span class="counter" data-target="15">0</span>+</h3>
+                        <p>Years Experience</p>
+                    </div>
+                    <div class="trust-item">
+                        <h3><span class="counter" data-target="500">0</span>+</h3>
+                        <p>Boreholes Drilled</p>
+                    </div>
+                    <div class="trust-item">
+                        <h3><span class="counter" data-target="20">0</span>+</h3>
+                        <p>Certifications</p>
+                    </div>
+                    <div class="trust-item">
+                        <h3><span class="counter" data-target="100">0</span>%</h3>
+                        <p>Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Snapshot -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="text-center" data-aos="fade-up">
+                    <h2 class="section-title">Our Core Services</h2>
+                    <p>Comprehensive water solutions from start to finish.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fa-solid fa-earth-africa service-icon"></i>
+                        <h3>Borehole Drilling</h3>
+                        <p>Deep drilling for residential and commercial use using state-of-the-art rigs.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fa-solid fa-magnifying-glass-location service-icon"></i>
+                        <h3>Hydrogeological Survey</h3>
+                        <p>Scientific site assessment to locate water and determine depth.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fa-solid fa-solar-panel service-icon"></i>
+                        <h3>Solar Pumping</h3>
+                        <p>Eco-friendly solar pump installation for off-grid water supply.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                        <i class="fa-solid fa-screwdriver-wrench service-icon"></i>
+                        <h3>Maintenance</h3>
+                        <p>Routine repairs, cleaning, and pump replacement services.</p>
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: 50px;" data-aos="fade-up">
+                    <a href="services.html" class="btn btn-secondary">View All Services</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process -->
+        <section class="section-padding process-section">
+            <div class="container">
+                <div class="text-center" data-aos="fade-up">
+                    <h2 class="section-title">How We Work</h2>
+                </div>
+                <div class="process-steps">
+                    <div class="step-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="step-number">1</div>
+                        <h3>Survey</h3>
+                        <p>Site analysis & permit</p>
+                    </div>
+                    <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="step-number">2</div>
+                        <h3>Drill</h3>
+                        <p>Drilling & casing</p>
+                    </div>
+                    <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="step-number">3</div>
+                        <h3>Install</h3>
+                        <p>Pump testing & setup</p>
+                    </div>
+                    <div class="step-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="step-number">4</div>
+                        <h3>Maintain</h3>
+                        <p>Aftercare support</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="container" data-aos="zoom-in">
+                <h2>Ready to access clean water?</h2>
+                <p style="margin: 20px 0; font-size: 1.2rem;">Get in touch with our team today for a free consultation.</p>
+                <a href="contact.html" class="btn btn-secondary" style="background: var(--white); color: var(--primary-blue);">Contact Us</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px; color: white;">
+                        <i class="fa-solid fa-faucet-drip" style="color: var(--accent-orange);"></i> AquaDrill Pro
+                    </div>
+                    <p>Providing reliable water solutions since 2008. Your trusted partner in borehole drilling and water management.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Borehole Drilling</li>
+                        <li>Solar Pumps</li>
+                        <li>Maintenance</li>
+                        <li>Hydro-geological Survey</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="border-top: 1px solid #333; padding-top: 20px;">
+                <p>&copy; 2024 AquaDrill Pro. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Preloader
+            setTimeout(function() {
+                $('#preloader').addClass('fade-out');
+            }, 500);
+            
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
+            // Mobile Menu
+            $('.mobile-toggle').click(function() {
+                $('.nav-links').toggleClass('active');
+                $(this).find('i').toggleClass('fa-bars fa-times');
+            });
+
+            // Counter Animation
+            let counted = false;
+            function animateCounters() {
+                if (counted) return;
+                let oTop = $('.trust-bar').offset().top - window.innerHeight + 200;
+                if ($(window).scrollTop() > oTop) {
+                    $('.counter').each(function() {
+                        let $this = $(this),
+                            countTo = $this.attr('data-target');
+                        $({ countNum: 0 }).animate({
+                            countNum: countTo
+                        }, {
+                            duration: 2000,
+                            easing: 'swing',
+                            step: function() {
+                                $this.text(Math.floor(this.countNum));
+                            },
+                            complete: function() {
+                                $this.text(this.countNum);
+                            }
+                        });
+                    });
+                    counted = true;
+                }
+            }
+
+            $(window).scroll(animateCounters);
+            animateCounters();
+        });
+    </script>
+</body>
+</html>

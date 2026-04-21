@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Projects | AquaDrill Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0A4D8C;
+            --primary-dark: #073663;
+            --earth-brown: #8B5E3C;
+            --earth-light: #A67B5B;
+            --accent-orange: #F4A261;
+            --text-dark: #2C3E50;
+            --text-light: #666;
+            --white: #ffffff;
+            --light-gray: #F4F7F6;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(10, 77, 140, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(10, 77, 140, 0.4); }
+        .section-padding { padding: 80px 0; }
+        .text-center { text-align: center; }
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--earth-brown), var(--accent-orange));
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.fade-out { opacity: 0; visibility: hidden; }
+        .loader-water {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-blue);
+            border-top-color: var(--accent-orange);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: var(--earth-brown); font-size: 2rem; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 1rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-blue); }
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-blue); }
+
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(135deg, rgba(10, 77, 140, 0.9), rgba(139, 94, 60, 0.8)), 
+                        url('https://picsum.photos/seed/projects/1920/400') no-repeat center center/cover;
+            padding: 80px 0;
+            color: var(--white);
+            text-align: center;
+        }
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: slideDown 0.6s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--primary-blue);
+            background: transparent;
+            color: var(--primary-blue);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(10, 77, 140, 0.3);
+        }
+
+        /* Projects Gallery */
+        .projects-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .project-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 280px;
+            cursor: pointer;
+        }
+        .project-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .project-overlay {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: var(--white);
+            transition: bottom 0.4s ease;
+        }
+        .project-overlay h4 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .project-overlay p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        .project-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-blue);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        .project-item:hover img { transform: scale(1.1); }
+        .project-item:hover .project-overlay { bottom: 0; }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .lightbox-close:hover {
+            color: var(--accent-orange);
+            transform: rotate(90deg);
+        }
+        .lightbox-caption {
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* Stats */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+            color: white;
+            padding: 60px 0;
+            margin-top: 60px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+            color: #aaa;
+            padding: 60px 0 20px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a:hover { color: var(--accent-orange); padding-left: 5px; }
+        .social-links a { margin-right: 15px; font-size: 1.4rem; transition: var(--transition); }
+        .social-links a:hover { color: var(--accent-orange); transform: translateY(-3px); }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 85px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 30px;
+                display: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                border-radius: 0 0 20px 20px;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .page-banner h1 { font-size: 2.2rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader" style="text-align: center;">
+            <div class="loader-water"></div>
+            <p style="color: var(--primary-blue); font-weight: 600;">Loading Portfolio...</p>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightbox-img">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-faucet-drip"></i> AquaDrill Pro
+            </a>
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+                <a href="quote.html" class="btn btn-primary">Get a Quote</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Our Portfolio</h1>
+            <p>Showcasing successful water projects across the region</p>
+        </div>
+    </section>
+
+    <!-- Projects Gallery -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="section-title">Recent Projects</h2>
+                <p>Quality workmanship delivered on time</p>
+            </div>
+
+            <div class="filter-controls" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="residential">Residential</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+                <button class="filter-btn" data-filter="agricultural">Agricultural</button>
+            </div>
+
+            <div class="projects-gallery">
+                <div class="project-item" data-category="residential" data-aos="zoom-in">
+                    <span class="project-category">Residential</span>
+                    <img src="https://picsum.photos/seed/bore1/400/350" alt="Residential Borehole">
+                    <div class="project-overlay">
+                        <h4>Karen Residence</h4>
+                        <p>Depth: 120m | Yield: 3,500 L/hr</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Jan 2024</p>
+                    </div>
+                </div>
+                <div class="project-item" data-category="agricultural" data-aos="zoom-in" data-aos-delay="100">
+                    <span class="project-category">Agricultural</span>
+                    <img src="https://picsum.photos/seed/farm1/400/350" alt="Farm Irrigation">
+                    <div class="project-overlay">
+                        <h4>Green Valley Farm</h4>
+                        <p>Depth: 200m | Solar Installed</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Dec 2023</p>
+                    </div>
+                </div>
+                <div class="project-item" data-category="commercial" data-aos="zoom-in" data-aos-delay="200">
+                    <span class="project-category">Commercial</span>
+                    <img src="https://picsum.photos/seed/building/400/350" alt="School Complex">
+                    <div class="project-overlay">
+                        <h4>Sunrise Academy</h4>
+                        <p>Depth: 150m | Full Reticulation</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Nov 2023</p>
+                    </div>
+                </div>
+                <div class="project-item" data-category="residential" data-aos="zoom-in" data-aos-delay="300">
+                    <span class="project-category">Residential</span>
+                    <img src="https://picsum.photos/seed/water2/400/350" alt="Estate Supply">
+                    <div class="project-overlay">
+                        <h4>Riverside Estate</h4>
+                        <p>Depth: 180m | 10,000L Tank</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Oct 2023</p>
+                    </div>
+                </div>
+                <div class="project-item" data-category="agricultural" data-aos="zoom-in" data-aos-delay="400">
+                    <span class="project-category">Agricultural</span>
+                    <img src="https://picsum.photos/seed/green/400/350" alt="Greenhouse Project">
+                    <div class="project-overlay">
+                        <h4>Bloom Greenhouse</h4>
+                        <p>Drip Irrigation Setup</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Sep 2023</p>
+                    </div>
+                </div>
+                <div class="project-item" data-category="commercial" data-aos="zoom-in" data-aos-delay="500">
+                    <span class="project-category">Commercial</span>
+                    <img src="https://picsum.photos/seed/factory/400/350" alt="Factory Supply">
+                    <div class="project-overlay">
+                        <h4>Industrial Park</h4>
+                        <p>Industrial Pump Setup</p>
+                        <p style="margin-top: 10px;"><i class="fa-solid fa-calendar"></i> Completed: Aug 2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item" data-aos="fade-up">
+                    <h3><span class="stat-counter" data-target="500">0</span>+</h3>
+                    <p>Projects Completed</p>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                    <h3><span class="stat-counter" data-target="150">0</span>+</h3>
+                    <p>Happy Clients</p>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                    <h3><span class="stat-counter" data-target="50">0</span>+</h3>
+                    <p>Counties Served</p>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                    <h3><span class="stat-counter" data-target="98">0</span>%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px; color: white;">
+                        <i class="fa-solid fa-faucet-drip" style="color: var(--accent-orange);"></i> AquaDrill Pro
+                    </div>
+                    <p>Providing reliable water solutions since 2008. Your trusted partner in borehole drilling and water management.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Borehole Drilling</li>
+                        <li>Solar Pumps</li>
+                        <li>Maintenance</li>
+                        <li>Hydro-geological Survey</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="border-top: 1px solid #333; padding-top: 20px;">
+                <p>&copy; 2024 AquaDrill Pro. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#preloader').addClass('fade-out');
+            }, 500);
+            
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
+            $('.mobile-toggle').click(function() {
+                $('.nav-links').toggleClass('active');
+                $(this).find('i').toggleClass('fa-bars fa-times');
+            });
+
+            // Filter Projects
+            $('.filter-btn').click(function() {
+                var filter = $(this).data('filter');
+                
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+
+                if (filter === 'all') {
+                    $('.project-item').fadeIn(300);
+                } else {
+                    $('.project-item').each(function() {
+                        if ($(this).data('category') === filter) {
+                            $(this).fadeIn(300);
+                        } else {
+                            $(this).fadeOut(300);
+                        }
+                    });
+                }
+            });
+
+            // Lightbox
+            $('.project-item').click(function() {
+                var imgSrc = $(this).find('img').attr('src');
+                var title = $(this).find('h4').text();
+                var details = $(this).find('p').first().text();
+                
+                $('#lightbox-img').attr('src', imgSrc);
+                $('#lightbox-caption').html('<h3>' + title + '</h3><p>' + details + '</p>');
+                $('#lightbox').addClass('active');
+            });
+
+            $('.lightbox-close, .lightbox').click(function(e) {
+                if (e.target === this) {
+                    $('#lightbox').removeClass('active');
+                }
+            });
+
+            // Stats Counter
+            var statsCounted = false;
+            function animateStats() {
+                if (statsCounted) return;
+                var oTop = $('.stats-section').offset().top - window.innerHeight + 200;
+                if ($(window).scrollTop() > oTop) {
+                    $('.stat-counter').each(function() {
+                        var $this = $(this),
+                            countTo = $this.attr('data-target');
+                        $({ countNum: 0 }).animate({
+                            countNum: countTo
+                        }, {
+                            duration: 2000,
+                            easing: 'swing',
+                            step: function() {
+                                $this.text(Math.floor(this.countNum));
+                            },
+                            complete: function() {
+                                $this.text(this.countNum);
+                            }
+                        });
+                    });
+                    statsCounted = true;
+                }
+            }
+
+            $(window).scroll(animateStats);
+            animateStats();
+        });
+    </script>
+</body>
+</html>
